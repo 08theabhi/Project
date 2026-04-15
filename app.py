@@ -1,5 +1,32 @@
 import streamlit as st
 from groq import Groq
+import base64
+
+# MUST be first Streamlit command
+st.set_page_config(page_title="StartZen", layout="wide")
+
+# function to load image
+def get_base64(file):
+    with open(file, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+# change filename if needed
+img = get_base64("download.jpg")
+
+# apply background
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/jpg;base64,{img}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 st.set_page_config("StartZen Content Generator",layout="wide")
 st.title("StartZenAI - Content Generator")
 st.image("download.jpg")
