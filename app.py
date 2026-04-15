@@ -2,18 +2,16 @@ import streamlit as st
 from groq import Groq
 import base64
 
-# MUST be first Streamlit command
-st.set_page_config(page_title="StartZen", layout="wide")
+# MUST be first Streamlit command — only once
+st.set_page_config(page_title="StartZen Content Generator", layout="wide")
 
-# function to load image
+# Function to load image
 def get_base64(file):
     with open(file, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
-# change filename if needed
-img = get_base64("download.jpg")
-
-# apply background
+# Apply background
+img = get_base64("images/download.jpg")
 st.markdown(
     f"""
     <style>
@@ -27,28 +25,32 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-st.set_page_config("StartZen Content Generator",layout="wide")
-st.title("StartZenAI - Content Generator")
-st.image("download.jpg")
+
+st.title("🧘 StartZenAI - Content Generator")
+st.image("images/download.jpg", width=300)
+
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+
 product = st.text_input("Product")
 audience = st.text_input("Audience")
+
 if st.button("Generate Content"):
-    prompt = f"Write marketing content for {product} targeting {audience}."
-    response = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[{"role": "user", "content": prompt}]
-    )
-    st.session_state.text = response.choices[0].message.content
-    text =response.choices[0].message.content
-    st.write(text)
+    if product.strip() and audience.strip():
+        prompt = f"Write marketing content for {product} targeting {audience}."
+        with st.spinner("Generating content..."):
+            response = client.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[{"role": "user", "content": prompt}]
+            )
+            st.session_state.text = response.choices[0].message.content
+
 if "text" in st.session_state:
     content = st.text_area("Generated Content", st.session_state.text, height=300)
     st.download_button(
-            label="⬇️ Download as TXT",
-            data=content,
-            file_name="marketing_copy.txt",
-            mime="text/plain"
-        )
+        label="⬇️ Download as TXT",
+        data=content,
+        file_name="marketing_copy.txt",
+        mime="text/plain"
+    )
 else:
-        st.info("Generate content first")
+    st.info("👆 Enter a product and audience then click Generate Content")
