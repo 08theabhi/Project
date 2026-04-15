@@ -6,7 +6,7 @@ st.image("download1.jpg")
 client =  Groq(api_key = st.secrets["GROQ_API_KEY"])
 product = st.text_input("Product")
 audience = st.text_input("Audience")
-if st.button("Generate Content")
+if st.button("Generate Content"):
 prompt = f"write marketing content for (product) targeting (audience)."
 response =  Client.chat.completions.create(
   model = "llama-3.3-70b-versatile",
