@@ -1,33 +1,9 @@
 import streamlit as st
 from groq import Groq
-import base64
 
-# MUST be first Streamlit command — only once
 st.set_page_config(page_title="StartZen Content Generator", layout="wide")
 
-# Function to load image
-def get_base64(file):
-    with open(file, "rb") as f:
-        return base64.b64encode(f.read()).decode()
-
-# Apply background
-img = get_base64("images/download.jpg")
-st.markdown(
-    f"""
-    <style>
-    .stApp {{
-        background-image: url("data:image/jpg;base64,{img}");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
 st.title("🧘 StartZenAI - Content Generator")
-st.image("images/download.jpg", width=300)
 
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
@@ -43,6 +19,8 @@ if st.button("Generate Content"):
                 messages=[{"role": "user", "content": prompt}]
             )
             st.session_state.text = response.choices[0].message.content
+    else:
+        st.warning("⚠️ Please enter both Product and Audience.")
 
 if "text" in st.session_state:
     content = st.text_area("Generated Content", st.session_state.text, height=300)
