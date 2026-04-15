@@ -1,6 +1,6 @@
 import streamlit as st
 from groq import Groq
-st.set_page.contig("StartZen Content Generator",layout="wide")
+st.set_page.config("StartZen Content Generator",layout="wide")
 st.title("StartZenAI - Content Generator")
 st.image("download1.jpg")
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
