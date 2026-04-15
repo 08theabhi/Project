@@ -2,7 +2,7 @@ import streamlit as st
 from groq import Groq
 st.set_page_config("StartZen Content Generator",layout="wide")
 st.title("StartZenAI - Content Generator")
-st.image("image3.jpg")
+st.image("download.jpg")
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 product = st.text_input("Product")
 audience = st.text_input("Audience")
